@@ -4,23 +4,68 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "prisma generate && next build && npm run build:worker && node scripts/prepare-standalone.mjs",
+    "start": "node --env-file-if-exists=.env .next/standalone/server.js",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run --project unit",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "node --env-file-if-exists=.env --import tsx prisma/seeds/demo.ts",
+    "worker": "node --env-file-if-exists=.env --import tsx src/jobs/email-worker.ts",
+    "images:prepare": "node scripts/prepare-images.mjs",
+    "build:worker": "esbuild src/jobs/email-worker.ts --bundle --platform=node --target=node24 --format=cjs --external:@prisma/client --outfile=dist-worker/email-worker.cjs",
+    "owner:access": "node --env-file-if-exists=.env --import tsx scripts/owner-access.ts"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "4.29.0",
+    "@fontsource-variable/lora": "5.3.0",
+    "@fontsource-variable/source-sans-3": "5.3.0",
+    "@internationalized/date": "3.12.4",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "dotenv": "17.3.1",
     "next": "16.3.4",
+    "pg": "8.23.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-aria-components": "1.21.1",
+    "react-dom": "19.2.8",
+    "resend": "6.27.0",
+    "server-only": "0.0.1",
+    "sharp": "0.35.4",
+    "zod": "4.6.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "24.13.4",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "5.0.0",
+    "esbuild": "0.28.2",
+    "eslint": "9.39.5",
     "eslint-config-next": "16.3.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "prettier": "3.9.6",
+    "prisma": "7.10.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "vitest": "5.0.0"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.2",
+    "mysql2": "3.24.4"
   }
 }

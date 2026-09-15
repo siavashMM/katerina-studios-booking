@@ -1,0 +1,53 @@
+name: Checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-bookworm
+        env:
+          POSTGRES_USER: katerina
+          POSTGRES_PASSWORD: test-only
+          POSTGRES_DB: katerina_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U katerina -d katerina_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://katerina:test-only@localhost:5432/katerina_test
+      TEST_DATABASE_URL: postgresql://katerina:test-only@localhost:5432/katerina_test
+      DEMO_MODE: "true"
+      APP_URL: http://localhost:3000
+      RECEIPT_SECRET: ci-receipt-secret-with-at-least-32-characters
+      RATE_LIMIT_SECRET: ci-rate-secret-with-at-least-32-characters
+      AUTH0_SECRET: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run db:deploy
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:e2e
+      - run: docker build --target runtime -t katerina-studios:ci .
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-reports
+          path: |
+            playwright-report/
+            test-results/
+            coverage/
+          retention-days: 7

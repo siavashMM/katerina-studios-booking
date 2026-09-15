@@ -1,0 +1,238 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum AllocationKind {
+  RESERVATION
+  MANUAL_BLOCK
+}
+
+enum EmailStatus {
+  QUEUED
+  PROCESSING
+  SENT
+  FAILED
+  UNCERTAIN
+  SKIPPED
+}
+
+model Property {
+  id                     String @id @default(uuid()) @db.Uuid
+  slug                   String @unique
+  name                   String
+  timeZone               String @default("Europe/Athens")
+  currency               String @default("EUR")
+  isDemo                 Boolean @default(true)
+  bookingEnabled         Boolean @default(false)
+  verifiedAt             DateTime?
+  minimumStay            Int @default(1)
+  maximumStay            Int @default(30)
+  bookingHorizonDays      Int @default(365)
+  ownerNotificationEmail String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  accommodations         Accommodation[]
+  policies               PolicyVersion[]
+  reservations           Reservation[]
+  memberships            OwnerMembership[]
+  audits                 AuditEvent[]
+}
+
+model Accommodation {
+  id             String @id @default(uuid()) @db.Uuid
+  propertyId     String @db.Uuid
+  slug           String @unique
+  name           String
+  maxGuests      Int
+  basePriceCents Int
+  active         Boolean @default(true)
+  isDemo         Boolean @default(true)
+  sortOrder      Int @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  property       Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  seasonalPrices SeasonalPrice[]
+  reservations   Reservation[]
+  allocations    InventoryAllocation[]
+  @@index([propertyId, active])
+}
+
+model SeasonalPrice {
+  id              String @id @default(uuid()) @db.Uuid
+  accommodationId String @db.Uuid
+  startDate       DateTime @db.Date
+  endDate         DateTime @db.Date
+  priceCents      Int
+  label           String
+  createdAt       DateTime @default(now())
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Restrict)
+  @@index([accommodationId, startDate, endDate])
+}
+
+model PolicyVersion {
+  id           String @id @default(uuid()) @db.Uuid
+  propertyId   String @db.Uuid
+  version      Int
+  summary      String
+  active       Boolean @default(true)
+  isDemo       Boolean @default(true)
+  createdAt    DateTime @default(now())
+  property     Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  reservations Reservation[]
+  @@unique([propertyId, version])
+}
+
+model Reservation {
+  id                      String @id @default(uuid()) @db.Uuid
+  propertyId              String @db.Uuid
+  accommodationId         String @db.Uuid
+  policyVersionId         String @db.Uuid
+  reference               String @unique
+  idempotencyKey          String @unique @db.Uuid
+  payloadHash             String
+  receiptTokenHash        String
+  checkIn                 DateTime @db.Date
+  checkOut                DateTime @db.Date
+  guests                  Int
+  nights                  Int
+  firstName               String
+  lastName                String
+  email                   String
+  phone                   String?
+  country                 String?
+  arrivalTime             String?
+  specialRequests         String?
+  currency                String @default("EUR")
+  subtotalCents           Int
+  totalCents              Int
+  priceSnapshot           Json
+  policySnapshot          Json
+  quoteFingerprint        String
+  policyAcceptedAt        DateTime
+  status                  ReservationStatus @default(PENDING)
+  version                 Int @default(1)
+  externalChannelsCheckedAt DateTime?
+  externalChannelsCheckedBy String?
+  confirmedAt             DateTime?
+  cancelledAt             DateTime?
+  completedAt             DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  property                Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  accommodation           Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Restrict)
+  policy                  PolicyVersion @relation(fields: [policyVersionId], references: [id], onDelete: Restrict)
+  allocation              InventoryAllocation?
+  emails                  EmailOutbox[]
+  audits                  AuditEvent[]
+  @@index([propertyId, status, createdAt])
+  @@index([accommodationId, checkIn, checkOut])
+}
+
+model InventoryAllocation {
+  id              String @id @default(uuid()) @db.Uuid
+  accommodationId String @db.Uuid
+  reservationId   String? @unique @db.Uuid
+  startDate       DateTime @db.Date
+  endDate         DateTime @db.Date
+  kind            AllocationKind
+  active          Boolean @default(true)
+  reason          String?
+  createdBy       String
+  createdAt       DateTime @default(now())
+  releasedAt      DateTime?
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Restrict)
+  reservation     Reservation? @relation(fields: [reservationId], references: [id], onDelete: Restrict)
+  @@index([accommodationId, active, startDate, endDate])
+}
+
+model EmailOutbox {
+  id              String @id @default(uuid()) @db.Uuid
+  reservationId   String? @db.Uuid
+  kind            String
+  payload         Json
+  recipient       String
+  idempotencyKey  String @unique
+  status          EmailStatus @default(QUEUED)
+  attempts        Int @default(0)
+  nextAttemptAt   DateTime @default(now())
+  lockedAt        DateTime?
+  lockedBy        String?
+  firstAttemptAt  DateTime?
+  providerId      String?
+  lastError       String?
+  sentAt          DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  reservation     Reservation? @relation(fields: [reservationId], references: [id], onDelete: Restrict)
+  @@index([status, nextAttemptAt])
+}
+
+model AuditEvent {
+  id            String @id @default(uuid()) @db.Uuid
+  propertyId    String @db.Uuid
+  reservationId String? @db.Uuid
+  actorId       String?
+  action        String
+  metadata      Json
+  createdAt     DateTime @default(now())
+  property      Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  reservation   Reservation? @relation(fields: [reservationId], references: [id], onDelete: Restrict)
+  @@index([propertyId, createdAt])
+}
+
+model OwnerMembership {
+  id          String @id @default(uuid()) @db.Uuid
+  propertyId  String @db.Uuid
+  issuer      String
+  authSubject String
+  email       String
+  active      Boolean @default(true)
+  createdAt   DateTime @default(now())
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  @@unique([issuer, authSubject, propertyId])
+}
+
+model AuthSession {
+  id        String @id
+  data      Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([expiresAt])
+}
+
+model RateLimitCounter {
+  key         String @id
+  windowStart DateTime
+  count       Int
+  expiresAt   DateTime
+  @@index([expiresAt])
+}
+
+model ProcessedWebhook {
+  id          String @id
+  provider    String
+  eventId     String
+  eventType   String
+  providerId  String?
+  processedAt DateTime @default(now())
+  @@unique([provider, eventId])
+}
+
+model WorkerHeartbeat {
+  name          String @id
+  lastRunAt     DateTime
+  lastSuccessAt DateTime?
+  lastError     String?
+}

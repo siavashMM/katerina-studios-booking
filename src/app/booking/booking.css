@@ -1,0 +1,508 @@
+.booking-page {
+  padding-block: 3rem 6rem;
+}
+.booking-page .page-heading {
+  max-width: 44rem;
+  margin-bottom: 3rem;
+}
+.booking-progress {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  border-bottom: 1px solid #d8c8ac;
+  gap: 2rem;
+}
+.booking-progress li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0 1rem;
+  color: #566044;
+  font-size: 0.95rem;
+}
+.booking-progress li[aria-current] {
+  border-bottom: 2px solid #173f4f;
+  color: #173f4f;
+  font-weight: 600;
+}
+.booking-progress li > span {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+}
+.booking-progress .is-current > span {
+  background: #173f4f;
+  color: #fff;
+  border-color: #173f4f;
+}
+.booking-columns {
+  display: grid;
+  gap: 3rem;
+}
+.booking-panel {
+  min-width: 0;
+  max-width: 50rem;
+}
+.booking-step-heading {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 0 1.5rem;
+  outline: none;
+}
+.booking-form {
+  display: grid;
+  gap: 1.5rem;
+}
+.booking-form p {
+  margin: 0;
+}
+.booking-form > .button {
+  justify-self: start;
+  min-width: 15rem;
+}
+.booking-form .field {
+  display: grid;
+  gap: 0.45rem;
+  font-weight: 500;
+}
+.booking-form input:not([type="checkbox"]),
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem;
+  background: #fffdfa;
+  color: #252923;
+  border: 1px solid #918b7e;
+  border-radius: 3px;
+  font: inherit;
+}
+.booking-form .field-help {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #566044;
+}
+.booking-form textarea {
+  resize: vertical;
+}
+.booking-form .form-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.booking-form .form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.text-button {
+  border: 0;
+  background: none;
+  padding: 0.5rem 0;
+  min-height: 44px;
+  color: #173f4f;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.form-error {
+  background: #fff1ed;
+  border-left: 3px solid #9b3227;
+  padding: 1rem;
+  color: #85281f;
+  margin-bottom: 1.5rem;
+}
+.small-copy {
+  font-size: 0.925rem;
+  color: #566044;
+  line-height: 1.6;
+}
+.booking-dates {
+  margin-bottom: 1.5rem;
+}
+.studio-options {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.studio-option {
+  border: 1px solid #d8c8ac;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.5rem;
+  background: #fffdfa;
+}
+.studio-option h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+.studio-option-price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: start;
+}
+.studio-option-price strong {
+  font-size: 1.5rem;
+}
+.studio-option-price > span {
+  font-size: 0.85rem;
+  color: #566044;
+}
+.studio-option-price .button {
+  margin-top: 0.5rem;
+  font-size: 0.925rem;
+}
+.booking-summary {
+  align-self: start;
+  min-width: 0;
+  background: #eee9df;
+  border-top: 3px solid #566044;
+}
+.price-summary {
+  padding: 1.75rem;
+}
+.price-summary h2 {
+  font-size: 1.75rem;
+  margin: 0.5rem 0;
+}
+.sample-label {
+  font-size: 0.85rem;
+  color: #566044;
+}
+.stay-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.75rem 0;
+}
+.stay-summary dt {
+  font-size: 0.85rem;
+  color: #566044;
+}
+.stay-summary dd {
+  margin: 0.3rem 0 0;
+  font-weight: 600;
+}
+.price-lines {
+  border-top: 1px solid #c9c0b0;
+  padding-top: 0.75rem;
+}
+.price-lines p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.95rem;
+}
+.price-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #c9c0b0;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  font-size: 1.1rem;
+}
+.price-total strong {
+  font-size: 1.8rem;
+}
+.cash-note {
+  font-weight: 600;
+  margin-top: 1.25rem !important;
+}
+.price-summary .small-copy {
+  margin-top: 0.5rem;
+}
+.review-contact {
+  border-bottom: 1px solid #d8c8ac;
+  padding-bottom: 1.5rem;
+}
+.review-contact h3,
+.policy-panel h3 {
+  font-size: 1.3rem;
+  margin: 0 0 0.75rem;
+}
+.review-contact p {
+  margin: 0.3rem 0;
+}
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+.guest-message {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.policy-panel {
+  display: grid;
+  gap: 0.75rem;
+}
+.checkbox-field {
+  display: flex;
+  align-items: start;
+  gap: 0.85rem;
+  line-height: 1.6;
+}
+.checkbox-field input {
+  flex: 0 0 21px;
+  width: 21px;
+  height: 21px;
+  margin-top: 4px;
+  accent-color: #173f4f;
+}
+.checkbox-field a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.stay-picker > label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.stay-date-fields {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  border: 1px solid #918b7e;
+  border-radius: 3px;
+  background: #fffdfa;
+  max-width: 32rem;
+}
+.date-caption {
+  font-size: 0.8rem;
+  color: #566044;
+}
+.react-aria-DateInput {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+}
+.react-aria-DateSegment {
+  padding: 2px;
+}
+.react-aria-DateSegment[data-placeholder] {
+  color: #6b6a60;
+}
+.react-aria-DateSegment[data-focused] {
+  background: #173f4f;
+  color: white;
+  border-radius: 2px;
+  outline: none;
+}
+.date-arrow {
+  color: #566044;
+}
+.calendar-open {
+  margin-left: auto;
+  border: 0;
+  min-width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #173f4f;
+  cursor: pointer;
+}
+.calendar-popover {
+  background: #fffdfa;
+  border: 1px solid #d8c8ac;
+  box-shadow: 0 16px 40px #25292320;
+  padding: 1rem;
+  border-radius: 4px;
+  max-width: calc(100vw - 16px);
+  z-index: 100;
+}
+.calendar-popover .react-aria-Dialog {
+  outline: none;
+}
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.calendar-header h2 {
+  font-size: 1rem;
+  text-align: center;
+  font-family: var(--font-body, Arial), sans-serif;
+}
+.calendar-header button {
+  background: none;
+  border: 0;
+  color: #173f4f;
+  min-width: 44px;
+  height: 44px;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.calendar-months {
+  display: flex;
+  gap: 1.5rem;
+}
+.calendar-months table {
+  border-collapse: collapse;
+}
+.react-aria-CalendarHeaderCell {
+  font-size: 0.75rem;
+  color: #566044;
+  font-weight: 400;
+  padding-bottom: 0.75rem;
+}
+.react-aria-CalendarCell {
+  width: 40px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+}
+.react-aria-CalendarCell[data-selected] {
+  background: #173f4f;
+  color: white;
+}
+.react-aria-CalendarCell[data-disabled],
+.react-aria-CalendarCell[data-unavailable] {
+  color: #918b7e;
+  cursor: default;
+}
+.react-aria-CalendarCell[data-outside-month] {
+  visibility: hidden;
+}
+.react-aria-CalendarCell[data-focus-visible] {
+  outline: 2px solid #566044;
+  outline-offset: 2px;
+}
+.calendar-note {
+  font-size: 0.8rem;
+  color: #566044;
+  text-align: center;
+  margin: 0.75rem 0 0;
+}
+.receipt-page {
+  display: grid;
+  gap: 3rem;
+}
+.receipt-page h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.15;
+}
+.receipt-page section > p {
+  max-width: 40rem;
+  line-height: 1.7;
+}
+.receipt-reference {
+  padding: 1rem 0;
+  border-block: 1px solid #d8c8ac;
+  margin: 2rem 0 !important;
+}
+.receipt-reference strong {
+  margin-left: 0.5rem;
+}
+.receipt-page .notice {
+  margin: 2rem 0;
+}
+.booking-form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+@media (min-width: 640px) {
+  .booking-form .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .studio-option {
+    grid-template-columns: 1fr auto;
+  }
+  .studio-option-price {
+    align-items: end;
+  }
+}
+@media (min-width: 1024px) {
+  .booking-columns.has-summary,
+  .receipt-page {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 4rem;
+  }
+  .booking-summary {
+    position: sticky;
+    top: 2rem;
+  }
+}
+@media (max-width: 390px) {
+  .booking-progress {
+    gap: 0.7rem;
+  }
+  .booking-progress li {
+    font-size: 0.8rem;
+    gap: 0.35rem;
+  }
+  .stay-date-fields {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  .calendar-popover {
+    padding: 0.5rem;
+  }
+  .react-aria-CalendarCell {
+    width: 38px;
+  }
+  .booking-form > .button {
+    width: 100%;
+    min-width: 0;
+  }
+  .price-summary {
+    padding: 1.25rem;
+  }
+}
+@media (max-width: 767px) {
+  .stay-date-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    max-width: 100%;
+  }
+  .stay-date-fields > div {
+    grid-column: 1;
+  }
+  .date-arrow {
+    display: none;
+  }
+  .calendar-open {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+  .booking-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .receipt-reference {
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 350px) {
+  .booking-progress {
+    justify-content: space-between;
+    gap: 0.3rem;
+  }
+  .booking-progress li {
+    gap: 0.2rem;
+    font-size: 0.75rem;
+  }
+  .booking-progress li > span {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}

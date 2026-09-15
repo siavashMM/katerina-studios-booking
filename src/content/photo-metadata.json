@@ -1,0 +1,534 @@
+[
+  {
+    "id": "balcony-sea-view",
+    "sourceNumber": 1,
+    "category": "Balconies",
+    "alt": "Two chairs and a table on a balcony above olive trees and the sea.",
+    "width": 1473,
+    "height": 1068,
+    "variants": [
+      {
+        "src": "/images/balcony-sea-view-640.webp",
+        "width": 640,
+        "height": 464,
+        "bytes": 66654
+      },
+      {
+        "src": "/images/balcony-sea-view-960.webp",
+        "width": 960,
+        "height": 696,
+        "bytes": 135648
+      },
+      {
+        "src": "/images/balcony-sea-view-1440.webp",
+        "width": 1440,
+        "height": 1044,
+        "bytes": 238274
+      }
+    ]
+  },
+  {
+    "id": "dressing-table",
+    "sourceNumber": 2,
+    "category": "Studios",
+    "alt": "A wooden dressing table with a mirror and a small stool.",
+    "width": 1089,
+    "height": 1445,
+    "variants": [
+      {
+        "src": "/images/dressing-table-640.webp",
+        "width": 640,
+        "height": 849,
+        "bytes": 38956
+      },
+      {
+        "src": "/images/dressing-table-960.webp",
+        "width": 960,
+        "height": 1274,
+        "bytes": 78162
+      },
+      {
+        "src": "/images/dressing-table-1440.webp",
+        "width": 1089,
+        "height": 1445,
+        "bytes": 96376
+      }
+    ]
+  },
+  {
+    "id": "balcony-striped-chairs",
+    "sourceNumber": 4,
+    "category": "Balconies",
+    "alt": "Striped chairs and a small table on a balcony with a sea view.",
+    "width": 1459,
+    "height": 1078,
+    "variants": [
+      {
+        "src": "/images/balcony-striped-chairs-640.webp",
+        "width": 640,
+        "height": 473,
+        "bytes": 71704
+      },
+      {
+        "src": "/images/balcony-striped-chairs-960.webp",
+        "width": 960,
+        "height": 709,
+        "bytes": 152644
+      },
+      {
+        "src": "/images/balcony-striped-chairs-1440.webp",
+        "width": 1440,
+        "height": 1064,
+        "bytes": 291116
+      }
+    ]
+  },
+  {
+    "id": "studio-colourful-bed",
+    "sourceNumber": 5,
+    "category": "Studios",
+    "alt": "A double bed with a colourful cover beside a wooden wardrobe.",
+    "width": 1460,
+    "height": 1078,
+    "variants": [
+      {
+        "src": "/images/studio-colourful-bed-640.webp",
+        "width": 640,
+        "height": 473,
+        "bytes": 43964
+      },
+      {
+        "src": "/images/studio-colourful-bed-960.webp",
+        "width": 960,
+        "height": 709,
+        "bytes": 84702
+      },
+      {
+        "src": "/images/studio-colourful-bed-1440.webp",
+        "width": 1440,
+        "height": 1063,
+        "bytes": 147746
+      }
+    ]
+  },
+  {
+    "id": "studio-blue-bed",
+    "sourceNumber": 6,
+    "category": "Studios",
+    "alt": "A double bed with a blue cover beside floral curtains.",
+    "width": 1451,
+    "height": 1084,
+    "variants": [
+      {
+        "src": "/images/studio-blue-bed-640.webp",
+        "width": 640,
+        "height": 478,
+        "bytes": 41034
+      },
+      {
+        "src": "/images/studio-blue-bed-960.webp",
+        "width": 960,
+        "height": 717,
+        "bytes": 79334
+      },
+      {
+        "src": "/images/studio-blue-bed-1440.webp",
+        "width": 1440,
+        "height": 1076,
+        "bytes": 138460
+      }
+    ]
+  },
+  {
+    "id": "studio-interior",
+    "sourceNumber": 7,
+    "category": "Studios",
+    "alt": "A studio interior with a television, dressing table, and air conditioner.",
+    "width": 1088,
+    "height": 1445,
+    "variants": [
+      {
+        "src": "/images/studio-interior-640.webp",
+        "width": 640,
+        "height": 850,
+        "bytes": 85332
+      },
+      {
+        "src": "/images/studio-interior-960.webp",
+        "width": 960,
+        "height": 1275,
+        "bytes": 156648
+      },
+      {
+        "src": "/images/studio-interior-1440.webp",
+        "width": 1088,
+        "height": 1445,
+        "bytes": 185576
+      }
+    ]
+  },
+  {
+    "id": "balcony-evening",
+    "sourceNumber": 8,
+    "category": "Balconies",
+    "alt": "A table on a balcony seen through open doors in the evening light.",
+    "width": 1683,
+    "height": 935,
+    "variants": [
+      {
+        "src": "/images/balcony-evening-640.webp",
+        "width": 640,
+        "height": 356,
+        "bytes": 31622
+      },
+      {
+        "src": "/images/balcony-evening-960.webp",
+        "width": 960,
+        "height": 533,
+        "bytes": 63288
+      },
+      {
+        "src": "/images/balcony-evening-1440.webp",
+        "width": 1440,
+        "height": 800,
+        "bytes": 121906
+      }
+    ]
+  },
+  {
+    "id": "studio-double-bed",
+    "sourceNumber": 9,
+    "category": "Studios",
+    "alt": "A double bed against a pale blue wall beside a balcony door.",
+    "width": 1461,
+    "height": 1077,
+    "variants": [
+      {
+        "src": "/images/studio-double-bed-640.webp",
+        "width": 640,
+        "height": 472,
+        "bytes": 47890
+      },
+      {
+        "src": "/images/studio-double-bed-960.webp",
+        "width": 960,
+        "height": 708,
+        "bytes": 89790
+      },
+      {
+        "src": "/images/studio-double-bed-1440.webp",
+        "width": 1440,
+        "height": 1062,
+        "bytes": 150870
+      }
+    ]
+  },
+  {
+    "id": "studio-balcony-door",
+    "sourceNumber": 10,
+    "category": "Studios",
+    "alt": "A blue bed cover and an open view of the sea through balcony doors.",
+    "width": 1465,
+    "height": 1074,
+    "variants": [
+      {
+        "src": "/images/studio-balcony-door-640.webp",
+        "width": 640,
+        "height": 469,
+        "bytes": 25680
+      },
+      {
+        "src": "/images/studio-balcony-door-960.webp",
+        "width": 960,
+        "height": 704,
+        "bytes": 51338
+      },
+      {
+        "src": "/images/studio-balcony-door-1440.webp",
+        "width": 1440,
+        "height": 1056,
+        "bytes": 98202
+      }
+    ]
+  },
+  {
+    "id": "olive-grove",
+    "sourceNumber": 11,
+    "category": "Surroundings",
+    "alt": "Olive trees and tall cypress trees above a blue sea.",
+    "width": 1469,
+    "height": 1071,
+    "variants": [
+      {
+        "src": "/images/olive-grove-640.webp",
+        "width": 640,
+        "height": 467,
+        "bytes": 56796
+      },
+      {
+        "src": "/images/olive-grove-960.webp",
+        "width": 960,
+        "height": 700,
+        "bytes": 123318
+      },
+      {
+        "src": "/images/olive-grove-1440.webp",
+        "width": 1440,
+        "height": 1050,
+        "bytes": 245066
+      }
+    ]
+  },
+  {
+    "id": "garden-steps",
+    "sourceNumber": 12,
+    "category": "Property",
+    "alt": "Stone garden steps between white buildings with a sea view beyond.",
+    "width": 1092,
+    "height": 1440,
+    "variants": [
+      {
+        "src": "/images/garden-steps-640.webp",
+        "width": 640,
+        "height": 844,
+        "bytes": 110068
+      },
+      {
+        "src": "/images/garden-steps-960.webp",
+        "width": 960,
+        "height": 1266,
+        "bytes": 219362
+      },
+      {
+        "src": "/images/garden-steps-1440.webp",
+        "width": 1092,
+        "height": 1440,
+        "bytes": 272208
+      }
+    ]
+  },
+  {
+    "id": "exterior-walkway",
+    "sourceNumber": 13,
+    "category": "Property",
+    "alt": "Stone steps lead to an outdoor walkway and studio entrances.",
+    "width": 1459,
+    "height": 1078,
+    "variants": [
+      {
+        "src": "/images/exterior-walkway-640.webp",
+        "width": 640,
+        "height": 473,
+        "bytes": 57832
+      },
+      {
+        "src": "/images/exterior-walkway-960.webp",
+        "width": 960,
+        "height": 709,
+        "bytes": 111378
+      },
+      {
+        "src": "/images/exterior-walkway-1440.webp",
+        "width": 1440,
+        "height": 1064,
+        "bytes": 195274
+      }
+    ]
+  },
+  {
+    "id": "studio-building",
+    "sourceNumber": 14,
+    "category": "Property",
+    "alt": "A white two-storey building with yellow trim and stone paths.",
+    "width": 1466,
+    "height": 1073,
+    "variants": [
+      {
+        "src": "/images/studio-building-640.webp",
+        "width": 640,
+        "height": 468,
+        "bytes": 86348
+      },
+      {
+        "src": "/images/studio-building-960.webp",
+        "width": 960,
+        "height": 703,
+        "bytes": 180832
+      },
+      {
+        "src": "/images/studio-building-1440.webp",
+        "width": 1440,
+        "height": 1054,
+        "bytes": 330924
+      }
+    ]
+  },
+  {
+    "id": "coast-at-dusk",
+    "sourceNumber": 15,
+    "category": "Surroundings",
+    "alt": "Beach umbrellas beside a bay at dusk.",
+    "width": 1693,
+    "height": 929,
+    "variants": [
+      {
+        "src": "/images/coast-at-dusk-640.webp",
+        "width": 640,
+        "height": 351,
+        "bytes": 27490
+      },
+      {
+        "src": "/images/coast-at-dusk-960.webp",
+        "width": 960,
+        "height": 527,
+        "bytes": 54938
+      },
+      {
+        "src": "/images/coast-at-dusk-1440.webp",
+        "width": 1440,
+        "height": 790,
+        "bytes": 106790
+      }
+    ]
+  },
+  {
+    "id": "garden-path",
+    "sourceNumber": 16,
+    "category": "Property",
+    "alt": "A narrow path under olive trees and red flowers.",
+    "width": 1089,
+    "height": 1445,
+    "variants": [
+      {
+        "src": "/images/garden-path-640.webp",
+        "width": 640,
+        "height": 849,
+        "bytes": 197450
+      },
+      {
+        "src": "/images/garden-path-960.webp",
+        "width": 960,
+        "height": 1274,
+        "bytes": 387862
+      },
+      {
+        "src": "/images/garden-path-1440.webp",
+        "width": 1089,
+        "height": 1445,
+        "bytes": 470564
+      }
+    ]
+  },
+  {
+    "id": "parking-area",
+    "sourceNumber": 17,
+    "category": "Property",
+    "alt": "A parked car beside olive trees and a stone wall.",
+    "width": 1465,
+    "height": 1074,
+    "variants": [
+      {
+        "src": "/images/parking-area-640.webp",
+        "width": 640,
+        "height": 469,
+        "bytes": 113806
+      },
+      {
+        "src": "/images/parking-area-960.webp",
+        "width": 960,
+        "height": 704,
+        "bytes": 241858
+      },
+      {
+        "src": "/images/parking-area-1440.webp",
+        "width": 1440,
+        "height": 1056,
+        "bytes": 448562
+      }
+    ]
+  },
+  {
+    "id": "coastal-cliffs",
+    "sourceNumber": 18,
+    "category": "Surroundings",
+    "alt": "Pale rock cliffs and trees above deep blue water.",
+    "width": 1454,
+    "height": 1082,
+    "variants": [
+      {
+        "src": "/images/coastal-cliffs-640.webp",
+        "width": 640,
+        "height": 476,
+        "bytes": 93546
+      },
+      {
+        "src": "/images/coastal-cliffs-960.webp",
+        "width": 960,
+        "height": 714,
+        "bytes": 189692
+      },
+      {
+        "src": "/images/coastal-cliffs-1440.webp",
+        "width": 1440,
+        "height": 1072,
+        "bytes": 342546
+      }
+    ]
+  },
+  {
+    "id": "turquoise-bay",
+    "sourceNumber": 19,
+    "category": "Surroundings",
+    "alt": "Clear turquoise water below a pale cliff and a narrow beach.",
+    "width": 1455,
+    "height": 1081,
+    "variants": [
+      {
+        "src": "/images/turquoise-bay-640.webp",
+        "width": 640,
+        "height": 475,
+        "bytes": 93944
+      },
+      {
+        "src": "/images/turquoise-bay-960.webp",
+        "width": 960,
+        "height": 713,
+        "bytes": 194792
+      },
+      {
+        "src": "/images/turquoise-bay-1440.webp",
+        "width": 1440,
+        "height": 1070,
+        "bytes": 358104
+      }
+    ]
+  },
+  {
+    "id": "kitchenette",
+    "sourceNumber": 20,
+    "category": "Studios",
+    "alt": "A kitchenette with wooden cupboards, a small fridge, and cooking equipment.",
+    "width": 1090,
+    "height": 1443,
+    "variants": [
+      {
+        "src": "/images/kitchenette-640.webp",
+        "width": 640,
+        "height": 847,
+        "bytes": 64908
+      },
+      {
+        "src": "/images/kitchenette-960.webp",
+        "width": 960,
+        "height": 1271,
+        "bytes": 122596
+      },
+      {
+        "src": "/images/kitchenette-1440.webp",
+        "width": 1090,
+        "height": 1443,
+        "bytes": 146160
+      }
+    ]
+  }
+]

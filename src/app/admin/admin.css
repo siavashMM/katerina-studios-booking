@@ -1,0 +1,407 @@
+.admin-shell {
+  min-height: 100vh;
+  background: #f7f4ee;
+  color: #252923;
+}
+.admin-header {
+  padding: 1.5rem max(1.25rem, calc((100vw - 1280px) / 2));
+  border-bottom: 1px solid #d8c8ac;
+  background: #fffdfa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.admin-brand {
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: 1.4rem;
+  color: #173f4f;
+  text-decoration: none;
+}
+.admin-brand span {
+  display: block;
+  font-family: var(--font-body), Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  margin-top: 0.4rem;
+}
+.admin-header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+.admin-header nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: #173f4f;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.admin-header nav a:hover {
+  text-decoration: underline;
+}
+.admin-main {
+  max-width: 1280px;
+  margin: auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+.admin-heading {
+  margin: 1.5rem 0 2rem;
+}
+.admin-heading h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0.5rem 0 1rem;
+  overflow-wrap: anywhere;
+}
+.admin-heading > p:last-child {
+  max-width: 48rem;
+  color: #566044;
+}
+.admin-shell h2 {
+  font-size: 1.6rem;
+}
+.admin-shell h3 {
+  font-size: 1.2rem;
+}
+.admin-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+.admin-filters .field:first-child {
+  flex: 1;
+  min-width: 200px;
+}
+.admin-shell .field {
+  display: grid;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+.admin-shell input:not([type="checkbox"]),
+.admin-shell select,
+.admin-shell textarea {
+  min-height: 48px;
+  border: 1px solid #918b7e;
+  background: #fffdfa;
+  color: #252923;
+  border-radius: 3px;
+  padding: 0.75rem;
+  font: inherit;
+  max-width: 100%;
+  min-width: 0;
+}
+.admin-shell .form-grid {
+  display: grid;
+  gap: 1rem;
+}
+.admin-shell button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.admin-shell .text-button {
+  background: none;
+  border: 0;
+  color: #173f4f;
+  min-height: 44px;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.admin-shell .danger {
+  color: #8d3226;
+}
+.admin-card,
+.admin-actions {
+  padding: 1.5rem;
+  border: 1px solid #d8c8ac;
+  background: #fffdfa;
+  margin-bottom: 1.5rem;
+  min-width: 0;
+}
+.admin-card h2,
+.admin-actions h2 {
+  margin: 0 0 1.25rem;
+}
+.admin-form {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 50rem;
+}
+.admin-form > .button {
+  justify-self: start;
+}
+.admin-detail-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.admin-actions {
+  align-self: start;
+  display: grid;
+  gap: 1.25rem;
+}
+.admin-actions > .button,
+.admin-actions > .text-button {
+  justify-self: start;
+}
+.admin-data {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.admin-data dt {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #566044;
+}
+.admin-data dd {
+  margin: 0.4rem 0;
+  font-weight: 500;
+}
+.admin-shell .checkbox-field {
+  display: flex;
+  gap: 0.75rem;
+  align-items: start;
+  line-height: 1.6;
+}
+.admin-shell input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  accent-color: #173f4f;
+  margin-top: 3px;
+}
+.admin-shell .form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.admin-shell .guest-message {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.admin-shell .wrap-anywhere {
+  overflow-wrap: anywhere;
+}
+.reservation-table {
+  border: 1px solid #d8c8ac;
+  background: #fffdfa;
+}
+.reservation-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.reservation-table th {
+  text-align: left;
+  padding: 1rem;
+  font-size: 0.85rem;
+  background: #eee9df;
+  color: #566044;
+}
+.reservation-table td {
+  padding: 1.25rem 1rem;
+  border-top: 1px solid #d8c8ac;
+  vertical-align: top;
+}
+.reservation-table td > span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+}
+.reservation-table td > a {
+  font-weight: 600;
+  color: #173f4f;
+}
+.status {
+  display: inline-block !important;
+  font-size: 0.8rem !important;
+  padding: 0.3rem 0.65rem;
+  background: #eee9df;
+  text-transform: capitalize;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.status-pending,
+.status-queued {
+  background: #f0e3c7;
+  color: #624611;
+}
+.status-confirmed,
+.status-sent {
+  background: #e2eadb;
+  color: #345125;
+}
+.status-cancelled,
+.status-failed,
+.status-uncertain {
+  background: #f4ddd6;
+  color: #8d3226;
+}
+.admin-empty {
+  padding: 3rem 1.5rem;
+  background: #eee9df;
+  text-align: center;
+}
+.event-list,
+.block-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.event-list li,
+.block-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #d8c8ac;
+  flex-wrap: wrap;
+}
+.event-list p,
+.block-list p {
+  margin: 0.4rem 0;
+}
+.event-list time {
+  font-size: 0.85rem;
+  color: #566044;
+}
+.season-row {
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+  border: 1px solid #d8c8ac;
+  min-width: 0;
+}
+.season-row legend {
+  font-weight: 600;
+  padding: 0 0.5rem;
+}
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: #25292380;
+  display: grid;
+  place-items: center;
+  z-index: 200;
+  padding: 1rem;
+}
+.admin-modal {
+  max-width: 32rem;
+  background: #f7f4ee;
+  padding: 2rem;
+  border-radius: 4px;
+}
+.admin-modal .react-aria-Dialog {
+  outline: none;
+}
+.admin-modal h2 {
+  font-size: 1.75rem;
+}
+.admin-modal .form-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.admin-login {
+  max-width: 32rem;
+  margin: auto;
+  padding: 5rem 1.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+}
+.admin-login > .admin-brand {
+  margin-bottom: 3rem;
+}
+.admin-login h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+.admin-login .button {
+  margin-top: 1rem;
+}
+.admin-login .text-link {
+  margin-top: 2rem;
+}
+.admin-login .notice h2 {
+  font-size: 1.3rem;
+}
+.admin-rate-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .admin-shell .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admin-detail-grid {
+    grid-template-columns: 1.3fr 1fr;
+  }
+  .admin-rate-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admin-rate-grid > .admin-card {
+    align-self: start;
+  }
+}
+@media (max-width: 767px) {
+  .reservation-table {
+    border: 0;
+    background: none;
+  }
+  .reservation-table table,
+  .reservation-table tbody,
+  .reservation-table tr,
+  .reservation-table td {
+    display: block;
+  }
+  .reservation-table thead {
+    display: none;
+  }
+  .reservation-table tr {
+    border: 1px solid #d8c8ac;
+    background: #fffdfa;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  .reservation-table td {
+    border: 0;
+    padding: 0.6rem 0;
+  }
+  .reservation-table td:before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #566044;
+    margin-bottom: 0.25rem;
+  }
+  .admin-header {
+    padding: 1.25rem;
+  }
+  .admin-header nav {
+    gap: 0.25rem 1rem;
+  }
+  .admin-main {
+    padding-inline: 1rem;
+  }
+  .admin-card {
+    padding: 1.25rem;
+  }
+  .admin-filters > .button {
+    width: 100%;
+  }
+}

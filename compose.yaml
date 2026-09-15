@@ -1,0 +1,31 @@
+services:
+  web:
+    build:
+      context: .
+      target: runtime
+    image: katerina-studios:local
+    env_file: .env
+    ports:
+      - "127.0.0.1:3000:3000"
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+  worker:
+    image: katerina-studios:local
+    env_file: .env
+    command: ["node", "dist-worker/email-worker.cjs"]
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 90s
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      disable: true
+  migrate:
+    profiles: ["release"]
+    build:
+      context: .
+      target: tools
+    env_file: .env
+    command: ["npm", "run", "db:deploy"]
