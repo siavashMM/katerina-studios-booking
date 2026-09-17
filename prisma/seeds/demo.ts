@@ -13,7 +13,7 @@ async function seed() {
   await db.$transaction(async (tx) => {
     const property = await tx.property.upsert({
       where: { slug: "katerina-studios" },
-      update: {},
+      update: { portalPlan: "FULL_CONTROL" },
       create: {
         id: "10000000-0000-4000-8000-000000000001",
         slug: "katerina-studios",
@@ -21,6 +21,7 @@ async function seed() {
         isDemo: true,
         bookingEnabled: false,
         ownerNotificationEmail: "owner@example.test",
+        portalPlan: "FULL_CONTROL",
         minimumStay: 1,
         maximumStay: 30,
         bookingHorizonDays: 365,

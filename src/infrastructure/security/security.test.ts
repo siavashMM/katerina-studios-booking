@@ -11,6 +11,36 @@ describe("security boundaries", () => {
     expect(parseEnv({ DEMO_MODE: "false" }).DEMO_MODE).toBe(false);
     expect(() => parseEnv({ BOOKING_MODE: "instant" })).toThrow();
   });
+  it("limits real email smoke tests to development", () => {
+    expect(() => parseEnv({ NODE_ENV: "production", REAL_EMAIL_TEST: "true" })).toThrow(
+      "REAL_EMAIL_TEST is only available in development.",
+    );
+  });
+  it("does not start real email delivery without provider configuration", () => {
+    expect(
+      readinessIssues(
+        parseEnv({
+          DATABASE_URL: "postgresql://localhost/katerina",
+          RATE_LIMIT_SECRET: "r".repeat(32),
+          RECEIPT_SECRET: "r".repeat(32),
+          REAL_EMAIL_TEST: "true",
+        }),
+      ),
+    ).toContain("EMAIL_NOT_CONFIGURED");
+    expect(
+      readinessIssues(
+        parseEnv({
+          DATABASE_URL: "postgresql://localhost/katerina",
+          RATE_LIMIT_SECRET: "r".repeat(32),
+          RECEIPT_SECRET: "r".repeat(32),
+          REAL_EMAIL_TEST: "true",
+          RESEND_API_KEY: "test-key",
+          EMAIL_FROM: "Katerina Studios <onboarding@resend.dev>",
+          OWNER_NOTIFICATION_EMAIL: "owner@example.test",
+        }),
+      ),
+    ).not.toContain("EMAIL_NOT_CONFIGURED");
+  });
   it("reports missing production controls without returning secrets", () => {
     const issues = readinessIssues(parseEnv({ DEMO_MODE: "false" }));
     expect(issues).toContain("APP_URL_HTTPS_REQUIRED");

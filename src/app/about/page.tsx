@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowIcon, LeafIcon, SeaIcon } from "@/components/ui/icons";
 import { property } from "@/content/property";
 import { Photo } from "@/features/property/photo";
+import { nonEmpty } from "@/features/property/managed-content";
+import { getPublicProperty } from "@/features/property/public-data";
 import { getServerTranslation } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,6 +16,8 @@ export default async function AboutPage() {
   const { Translate } = await getServerTranslation();
   const story = Translate.property.familyStory;
   const storyAssets = property.familyStory;
+  const managed = await getPublicProperty();
+  const managedStory = nonEmpty(managed?.content?.story, story.introduction);
   return (
     <main id="main-content">
       <section className="container about-hero" aria-labelledby="about-title">
@@ -34,7 +38,7 @@ export default async function AboutPage() {
           <h2>{story.heading}</h2>
         </div>
         <div>
-          <p className="lead">{story.introduction}</p>
+          <p className="lead">{managedStory}</p>
         </div>
       </section>
 

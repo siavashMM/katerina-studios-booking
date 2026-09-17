@@ -2,7 +2,7 @@
 
 A booking request website for one property. Guests send a request. The owner checks external channels and confirms availability. Payment is in cash on arrival.
 
-The repository includes public pages, a four-step booking form, an owner area, PostgreSQL migrations, Auth0 access controls, and a Resend email worker. Demo mode uses two sample studios and captures email. It does not make real reservations.
+The repository includes public pages, a four-step booking form, an owner portal, PostgreSQL migrations, Auth0 access controls, an email outbox, and a Resend worker. The owner portal manages bookings, a calendar, guest email, blocked dates, and plan-based website controls. Demo mode uses two sample studios and captures email. It does not make real reservations.
 
 ## Local setup
 
@@ -48,7 +48,18 @@ The optional `compose.local.yaml` file adds local PostgreSQL: `docker compose -f
 
 Before real bookings, complete [the release checklist](docs/OPERATIONS.md). Configuration alone does not establish property accuracy, privacy terms, or recovery readiness.
 
-Read [architecture](docs/ARCHITECTURE.md), [security](docs/SECURITY.md), [tests](docs/TESTING.md), and [photo inventory](docs/PHOTO_INVENTORY.md).
+Read the [owner portal guide](OWNER_PORTAL.md), [architecture](docs/ARCHITECTURE.md), [security](docs/SECURITY.md), [tests](docs/TESTING.md), and [photo inventory](docs/PHOTO_INVENTORY.md).
+
+## Owner portal
+
+The existing owner route is `/admin`. It redirects to `/admin/reservations`. There is no second `/owner` application.
+
+- Owner Control includes bookings, manual bookings, the reservation calendar, messages, and blocked dates.
+- Full Control adds property text, studio details, photos, pricing, and iCal settings.
+- Server-side capability checks enforce the plan. A hidden link is not an access control.
+- Booking.com and Airbnb are manual sources until an approved partner connection exists.
+
+See [OWNER_PORTAL.md](OWNER_PORTAL.md) for routes, workflows, data rules, email checks, and channel limits.
 
 ## Google reviews
 

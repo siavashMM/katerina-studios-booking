@@ -43,6 +43,7 @@ artifacts/
 src/generated/
 dist-worker/
 public/images/originals/
+public/owner-uploads/
 
 # vercel
 .vercel

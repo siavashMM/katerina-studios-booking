@@ -13,9 +13,26 @@ enum ReservationStatus {
   COMPLETED
 }
 
+enum ReservationSource {
+  DIRECT
+  MANUAL
+  BOOKING_COM
+  AIRBNB
+  ICAL
+  PHONE
+  EMAIL
+  OTHER
+}
+
+enum PortalPlan {
+  OWNER_CONTROL
+  FULL_CONTROL
+}
+
 enum AllocationKind {
   RESERVATION
   MANUAL_BLOCK
+  EXTERNAL
 }
 
 enum EmailStatus {
@@ -40,6 +57,7 @@ model Property {
   maximumStay            Int @default(30)
   bookingHorizonDays      Int @default(365)
   ownerNotificationEmail String?
+  portalPlan             PortalPlan @default(OWNER_CONTROL)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
   accommodations         Accommodation[]
@@ -47,6 +65,9 @@ model Property {
   reservations           Reservation[]
   memberships            OwnerMembership[]
   audits                 AuditEvent[]
+  content                PropertyContent?
+  media                  MediaAsset[]
+  externalCalendars      ExternalCalendar[]
 }
 
 model Accommodation {
@@ -54,6 +75,10 @@ model Accommodation {
   propertyId     String @db.Uuid
   slug           String @unique
   name           String
+  shortDescription String @default("")
+  fullDescription String @default("")
+  beds           String @default("")
+  amenities      Json @default("[]")
   maxGuests      Int
   basePriceCents Int
   active         Boolean @default(true)
@@ -65,6 +90,8 @@ model Accommodation {
   seasonalPrices SeasonalPrice[]
   reservations   Reservation[]
   allocations    InventoryAllocation[]
+  media          MediaAsset[]
+  externalCalendars ExternalCalendar[]
   @@index([propertyId, active])
 }
 
@@ -113,6 +140,11 @@ model Reservation {
   country                 String?
   arrivalTime             String?
   specialRequests         String?
+  preferredLanguage       String?
+  internalNotes           String?
+  source                  ReservationSource @default(DIRECT)
+  paymentMethod           String @default("CASH_ON_ARRIVAL")
+  priceIsKnown            Boolean @default(true)
   currency                String @default("EUR")
   subtotalCents           Int
   totalCents              Int
@@ -153,7 +185,75 @@ model InventoryAllocation {
   releasedAt      DateTime?
   accommodation   Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Restrict)
   reservation     Reservation? @relation(fields: [reservationId], references: [id], onDelete: Restrict)
+  externalEvent   ExternalCalendarEvent?
   @@index([accommodationId, active, startDate, endDate])
+}
+
+model ExternalCalendar {
+  id                    String @id @default(uuid()) @db.Uuid
+  propertyId            String @db.Uuid
+  accommodationId       String @db.Uuid
+  name                  String
+  encryptedUrl          String
+  active                Boolean @default(true)
+  lastSyncedAt          DateTime?
+  lastError             String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  property              Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  accommodation         Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Restrict)
+  events                ExternalCalendarEvent[]
+  @@index([propertyId, active])
+}
+
+model ExternalCalendarEvent {
+  id                    String @id @default(uuid()) @db.Uuid
+  externalCalendarId    String @db.Uuid
+  allocationId          String @unique @db.Uuid
+  externalId            String
+  source                ReservationSource @default(ICAL)
+  summary               String?
+  lastSeenAt            DateTime
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  calendar              ExternalCalendar @relation(fields: [externalCalendarId], references: [id], onDelete: Restrict)
+  allocation            InventoryAllocation @relation(fields: [allocationId], references: [id], onDelete: Restrict)
+  @@unique([externalCalendarId, externalId])
+}
+
+model PropertyContent {
+  id                    String @id @default(uuid()) @db.Uuid
+  propertyId            String @unique @db.Uuid
+  introduction          String @default("")
+  story                 String @default("")
+  contactEmail          String @default("")
+  contactPhone          String @default("")
+  locationSummary       String @default("")
+  checkIn               String @default("")
+  checkOut              String @default("")
+  arrivalInstructions   String @default("")
+  amenities             Json @default("[]")
+  policies              Json @default("[]")
+  updatedAt             DateTime @updatedAt
+  property              Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+}
+
+model MediaAsset {
+  id                    String @id @default(uuid()) @db.Uuid
+  propertyId            String @db.Uuid
+  accommodationId       String? @db.Uuid
+  storageKey            String @unique
+  publicUrl             String
+  altText               String
+  width                 Int
+  height                Int
+  sortOrder             Int @default(0)
+  isHero                Boolean @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  property              Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  accommodation         Accommodation? @relation(fields: [accommodationId], references: [id], onDelete: Restrict)
+  @@index([propertyId, sortOrder])
 }
 
 model EmailOutbox {

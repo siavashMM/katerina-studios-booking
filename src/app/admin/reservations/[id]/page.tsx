@@ -7,6 +7,18 @@ import { ReservationActions } from "@/features/admin/ui/reservation-actions";
 import { adminService } from "@/features/booking/server";
 import { todayInAthens, dateOnly } from "@/features/booking/domain/rules";
 import { getServerTranslation } from "@/i18n/server";
+import { reservationPriceDetails } from "@/features/admin/domain/price-snapshot";
+
+const sourceLabels: Record<string, string> = {
+  DIRECT: "Direct",
+  MANUAL: "Manual",
+  BOOKING_COM: "Booking.com",
+  AIRBNB: "Airbnb",
+  ICAL: "iCal",
+  PHONE: "Phone",
+  EMAIL: "Email",
+  OTHER: "Other",
+};
 
 export default async function ReservationPage({ params }: { params: Promise<{ id: string }> }) {
   const [owner, { Translate, t, formatDate, formatCurrency }] = await Promise.all([
@@ -15,27 +27,28 @@ export default async function ReservationPage({ params }: { params: Promise<{ id
   ]);
   const parsed = z.uuid().safeParse((await params).id);
   if (!parsed.success) notFound();
-  const row = await adminService()
-    .getReservation(owner, parsed.data)
-    .catch((error: unknown) => {
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        error.code === "NOT_FOUND"
-      )
-        notFound();
-      throw error;
-    });
+  const service = adminService();
+  const row = await service.getReservation(owner, parsed.data).catch((error: unknown) => {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "NOT_FOUND"
+    )
+      notFound();
+    throw error;
+  });
+  const context = await service.getPortalContext(owner);
   const accommodationName =
     row.accommodation.name === "Demo Studio A"
       ? Translate.studios.items["demo-studio-a"].name
       : row.accommodation.name === "Demo Studio B"
         ? Translate.studios.items["demo-studio-b"].name
         : row.accommodation.name;
+  const priceDetails = reservationPriceDetails(row.priceSnapshot, row.subtotalCents);
   return (
     <>
-      <AdminNav />
+      <AdminNav fullControl={context.property.portalPlan === "FULL_CONTROL"} />
       <main id="main-content" className="admin-main">
         <Link className="text-link" href="/admin/reservations">
           ← {Translate.admin.detail.all}
@@ -66,6 +79,30 @@ export default async function ReservationPage({ params }: { params: Promise<{ id
                 </dd>
               </div>
               <div>
+                <dt>Nightly amount</dt>
+                <dd>
+                  {priceDetails.nightlyPrices.length
+                    ? [
+                        ...new Set(
+                          priceDetails.nightlyPrices.map((item) =>
+                            formatCurrency(item.amountCents),
+                          ),
+                        ),
+                      ].join(", ")
+                    : Translate.admin.detail.notProvided}
+                </dd>
+              </div>
+              <div>
+                <dt>Stay amount</dt>
+                <dd>{formatCurrency(priceDetails.subtotalCents)}</dd>
+              </div>
+              {priceDetails.supplements.map((item) => (
+                <div key={item.label}>
+                  <dt>{item.label}</dt>
+                  <dd>{formatCurrency(item.amountCents)}</dd>
+                </div>
+              ))}
+              <div>
                 <dt>{Translate.admin.detail.total}</dt>
                 <dd>{formatCurrency(row.totalCents)}</dd>
               </div>
@@ -76,6 +113,14 @@ export default async function ReservationPage({ params }: { params: Promise<{ id
               <div>
                 <dt>{Translate.admin.detail.arrival}</dt>
                 <dd>{row.arrivalTime || Translate.admin.detail.notProvided}</dd>
+              </div>
+              <div>
+                <dt>Source</dt>
+                <dd>{sourceLabels[row.source] ?? row.source}</dd>
+              </div>
+              <div>
+                <dt>Created</dt>
+                <dd>{formatDate(row.createdAt, { dateStyle: "medium", timeStyle: "short" })}</dd>
               </div>
             </dl>
             <h3>{Translate.admin.detail.guest}</h3>

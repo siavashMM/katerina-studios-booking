@@ -19,6 +19,7 @@ export function bookingService() {
     receiptSecret: env.RECEIPT_SECRET,
     demoMode: env.DEMO_MODE,
     appUrl: env.APP_URL,
+    ownerNotificationEmail: env.OWNER_NOTIFICATION_EMAIL,
   });
 }
 

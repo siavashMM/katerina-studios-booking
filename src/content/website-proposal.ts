@@ -180,7 +180,7 @@ const en: ProposalCopy = {
     recommendedPlan: "Owner Control",
     recommendedPrice: "€2,790 once",
     recommendedText:
-      "This plan gives the owner control of reservations, rates, and blocked dates. It gives the best value from the app that is ready now.",
+      "This plan gives the owner control of reservations, messages, and blocked dates. It gives the best value from the app that is ready now.",
   },
   plans: {
     eyebrow: "Choose your level of control",
@@ -229,13 +229,13 @@ const en: ProposalCopy = {
           "Secure sign-in, reservation dashboard, and calendar",
           "Pending, confirmed, and cancelled reservations with guest arrival details",
           "Confirm, cancel, complete, search, and filter reservations",
-          "Block dates and manage base, seasonal, and reservation status settings",
+          "Block dates, add manual bookings, and manage reservation status",
           "Email history, owner-area sending, confirmation, and cancellation emails",
           "One owner training session",
         ],
         operatingModelLabel: "Owner workflow",
         operatingModel:
-          "The owner manages reservations, prices, and blocked dates directly from the private workspace.",
+          "The owner manages reservations and blocked dates directly from the private workspace.",
         boundary: "Text and photo editing is not included. These changes cost €65 per hour.",
         status: "Recommended",
         action: "Choose Owner Control",
@@ -389,13 +389,13 @@ const en: ProposalCopy = {
           {
             feature: "Manage base prices",
             essential: "Developer",
-            ownerControl: "Owner dashboard",
+            ownerControl: "Developer",
             fullControl: "Owner dashboard",
           },
           {
             feature: "Manage seasonal prices",
             essential: "Developer",
-            ownerControl: "Owner dashboard",
+            ownerControl: "Developer",
             fullControl: "Owner dashboard",
           },
           {
@@ -644,7 +644,7 @@ const de: ProposalCopy = {
     recommendedPlan: "Eigentümer-Kontrolle",
     recommendedPrice: "2.790 € einmalig",
     recommendedText:
-      "Mit diesem Paket verwaltet der Eigentümer Reservierungen, Preise und gesperrte Zeiträume. Es bietet den besten Wert aus der App, die jetzt bereit ist.",
+      "Mit diesem Paket verwaltet der Eigentümer Reservierungen, Nachrichten und gesperrte Zeiträume. Es bietet den besten Wert aus der App, die jetzt bereit ist.",
   },
   plans: {
     eyebrow: "Wählen Sie Ihre Kontrolle",
@@ -693,13 +693,13 @@ const de: ProposalCopy = {
           "Sichere Anmeldung, Reservierungsübersicht und Kalender",
           "Offene, bestätigte und stornierte Reservierungen mit Ankunftsdaten",
           "Reservierungen bestätigen, stornieren, abschließen, suchen und filtern",
-          "Zeiträume, Basispreise, Saisonpreise und Reservierungsstatus verwalten",
+          "Zeiträume sperren, manuelle Buchungen hinzufügen und Reservierungsstatus verwalten",
           "E-Mail-Verlauf, Versand im Eigentümerbereich sowie Bestätigungs- und Stornierungs-E-Mails",
           "Eine Schulung für den Eigentümer",
         ],
         operatingModelLabel: "Ablauf für den Eigentümer",
         operatingModel:
-          "Der Eigentümer verwaltet Reservierungen, Preise und gesperrte Zeiträume direkt im privaten Bereich.",
+          "Der Eigentümer verwaltet Reservierungen und gesperrte Zeiträume direkt im privaten Bereich.",
         boundary:
           "Text- und Fotobearbeitung ist nicht enthalten. Diese Änderungen kosten 65 € pro Stunde.",
         status: "Empfohlen",
@@ -820,7 +820,7 @@ const de: ProposalCopy = {
           {
             feature: "Reservierungsverwaltung",
             essential: "Manuell",
-            ownerControl: "Eigentümerbereich",
+            ownerControl: "Entwickler",
             fullControl: "Eigentümerbereich",
           },
           {
@@ -855,13 +855,13 @@ const de: ProposalCopy = {
           {
             feature: "Basispreise verwalten",
             essential: "Entwickler",
-            ownerControl: "Eigentümerbereich",
+            ownerControl: "Entwickler",
             fullControl: "Eigentümerbereich",
           },
           {
             feature: "Saisonpreise verwalten",
             essential: "Entwickler",
-            ownerControl: "Eigentümerbereich",
+            ownerControl: "Entwickler",
             fullControl: "Eigentümerbereich",
           },
           {
@@ -1109,7 +1109,7 @@ const el: ProposalCopy = {
     recommendedPlan: "Έλεγχος Ιδιοκτήτη",
     recommendedPrice: "2.790 € μία φορά",
     recommendedText:
-      "Αυτό το πακέτο δίνει στον ιδιοκτήτη έλεγχο των κρατήσεων, των τιμών και των μη διαθέσιμων ημερομηνιών. Δίνει την καλύτερη αξία από την εφαρμογή που είναι έτοιμη τώρα.",
+      "Αυτό το πακέτο δίνει στον ιδιοκτήτη έλεγχο των κρατήσεων, των μηνυμάτων και των μη διαθέσιμων ημερομηνιών. Δίνει την καλύτερη αξία από την εφαρμογή που είναι έτοιμη τώρα.",
   },
   plans: {
     eyebrow: "Επιλέξτε το επίπεδο ελέγχου",
@@ -1157,13 +1157,13 @@ const el: ProposalCopy = {
           "Ασφαλής σύνδεση, πίνακας κρατήσεων και ημερολόγιο",
           "Εκκρεμείς, επιβεβαιωμένες και ακυρωμένες κρατήσεις με στοιχεία άφιξης",
           "Επιβεβαίωση, ακύρωση, ολοκλήρωση, αναζήτηση και φιλτράρισμα κρατήσεων",
-          "Διαχείριση ημερομηνιών, βασικών και εποχιακών τιμών και κατάστασης κράτησης",
+          "Αποκλεισμός ημερομηνιών, προσθήκη χειροκίνητων κρατήσεων και διαχείριση κατάστασης κράτησης",
           "Ιστορικό email, αποστολή από την περιοχή ιδιοκτήτη και email επιβεβαίωσης ή ακύρωσης",
           "Μία εκπαίδευση ιδιοκτήτη",
         ],
         operatingModelLabel: "Ροή ιδιοκτήτη",
         operatingModel:
-          "Ο ιδιοκτήτης διαχειρίζεται κρατήσεις, τιμές και αποκλεισμένες ημερομηνίες από την ιδιωτική περιοχή.",
+          "Ο ιδιοκτήτης διαχειρίζεται κρατήσεις και αποκλεισμένες ημερομηνίες από την ιδιωτική περιοχή.",
         boundary:
           "Η επεξεργασία κειμένων και φωτογραφιών δεν περιλαμβάνεται. Αυτές οι αλλαγές κοστίζουν 65 € ανά ώρα.",
         status: "Προτεινόμενο",
@@ -1284,7 +1284,7 @@ const el: ProposalCopy = {
           {
             feature: "Διαχείριση κρατήσεων",
             essential: "Χειροκίνητα",
-            ownerControl: "Περιοχή ιδιοκτήτη",
+            ownerControl: "Προγραμματιστής",
             fullControl: "Περιοχή ιδιοκτήτη",
           },
           {
@@ -1319,13 +1319,13 @@ const el: ProposalCopy = {
           {
             feature: "Διαχείριση βασικών τιμών",
             essential: "Προγραμματιστής",
-            ownerControl: "Περιοχή ιδιοκτήτη",
+            ownerControl: "Προγραμματιστής",
             fullControl: "Περιοχή ιδιοκτήτη",
           },
           {
             feature: "Διαχείριση εποχιακών τιμών",
             essential: "Προγραμματιστής",
-            ownerControl: "Περιοχή ιδιοκτήτη",
+            ownerControl: "Προγραμματιστής",
             fullControl: "Περιοχή ιδιοκτήτη",
           },
           {

@@ -36,6 +36,7 @@ suite("PostgreSQL booking transactions", () => {
         slug: "katerina-studios",
         name: "Demo property",
         isDemo: true,
+        portalPlan: "FULL_CONTROL",
         ownerNotificationEmail: "owner@example.test",
       },
     });
@@ -86,6 +87,232 @@ suite("PostgreSQL booking transactions", () => {
     await expect(booking.getReceipt(result.receipt.reference, "wrong-token")).rejects.toMatchObject(
       { code: "NOT_FOUND" },
     );
+  });
+  it("creates one manual external reservation and blocks its dates", async () => {
+    const idempotencyKey = randomUUID();
+    const input = {
+      idempotencyKey,
+      accommodationId,
+      checkIn: stay.checkIn,
+      checkOut: stay.checkOut,
+      guests: 2,
+      source: "BOOKING_COM" as const,
+      firstName: "Manual",
+      lastName: "Guest",
+      email: "manual@example.test",
+      country: "DE",
+      preferredLanguage: "de",
+      internalNotes: "Entered from the Booking.com owner record.",
+    };
+
+    const first = await admin.createManualReservation(actor, input);
+    const replay = await admin.createManualReservation(actor, input);
+
+    expect(replay.id).toBe(first.id);
+    expect(first).toMatchObject({ source: "BOOKING_COM", status: "CONFIRMED" });
+    expect(await db.reservation.count()).toBe(1);
+    expect(await db.inventoryAllocation.count({ where: { active: true } })).toBe(1);
+    expect((await booking.getAvailability(stay)).quotes).toHaveLength(0);
+  });
+  it("imports one iCal event once and blocks availability", async () => {
+    const calendar = await admin.createExternalCalendar(actor, {
+      accommodationId,
+      name: "External calendar",
+      encryptedUrl: "encrypted-test-value",
+    });
+    const event = {
+      externalId: "external-42",
+      start: stay.checkIn,
+      end: stay.checkOut,
+      summary: "Imported reservation",
+      cancelled: false,
+    };
+
+    await admin.syncExternalCalendar(actor, calendar.id, [event]);
+    await admin.syncExternalCalendar(actor, calendar.id, [event]);
+
+    expect(await db.externalCalendarEvent.count()).toBe(1);
+    expect(await db.inventoryAllocation.count({ where: { active: true } })).toBe(1);
+    expect((await booking.getAvailability(stay)).quotes).toHaveLength(0);
+  });
+  it("updates and archives accommodation content without deleting history", async () => {
+    const updated = await admin.updateAccommodation(actor, accommodationId, {
+      name: "Garden Studio",
+      shortDescription: "A compact studio near the garden.",
+      fullDescription: "A calm studio with a private outdoor area.",
+      maxGuests: 2,
+      beds: "One double bed",
+      amenities: ["Air conditioning", "Kitchenette"],
+      active: false,
+    });
+
+    expect(updated).toMatchObject({ name: "Garden Studio", active: false });
+    expect(await db.accommodation.count({ where: { id: accommodationId } })).toBe(1);
+    expect(await db.auditEvent.count({ where: { action: "ACCOMMODATION_UPDATED" } })).toBe(1);
+  });
+  it("manages public content, photos, messages, and calendar projections", async () => {
+    const portal = await admin.getPortalContext(actor);
+    expect(portal.property.portalPlan).toBe("FULL_CONTROL");
+    expect(portal.capabilities.canManagePhotos).toBe(true);
+    expect(await admin.getPropertyContent(actor)).toBeNull();
+
+    const content = {
+      introduction: "A direct family welcome.",
+      story: "A factual property story.",
+      contactEmail: "stay@example.test",
+      contactPhone: "+30 123 456 7890",
+      locationSummary: "A hillside location in Paleokastritsa.",
+      checkIn: "15:00",
+      checkOut: "11:00",
+      arrivalInstructions: "Call on arrival.",
+      amenities: ["Kitchenette"],
+      policies: ["Cash on arrival"],
+    };
+    expect((await admin.updatePropertyContent(actor, content)).introduction).toBe(
+      content.introduction,
+    );
+    expect((await admin.getPropertyContent(actor))?.policies).toEqual(content.policies);
+    expect(await admin.listAccommodationContent(actor)).toHaveLength(1);
+    expect(await admin.listAccommodationsForOwner(actor)).toHaveLength(1);
+
+    const firstKey = `${randomUUID()}.webp`;
+    const first = await admin.createMediaAsset(actor, {
+      storageKey: firstKey,
+      publicUrl: `/owner-uploads/${firstKey}`,
+      altText: "The property entrance",
+      width: 1600,
+      height: 1200,
+    });
+    const secondKey = `${randomUUID()}.webp`;
+    const second = await admin.createMediaAsset(actor, {
+      storageKey: secondKey,
+      publicUrl: `/owner-uploads/${secondKey}`,
+      altText: "A studio balcony",
+      width: 1200,
+      height: 1600,
+      accommodationId,
+    });
+    await admin.updateMediaAsset(actor, first.id, {
+      altText: "The main property entrance",
+      isHero: true,
+      sortOrder: 2,
+    });
+    await admin.updateMediaAsset(actor, second.id, {
+      altText: "A private studio balcony",
+      isHero: true,
+      sortOrder: 1,
+    });
+    const media = await admin.listMedia(actor);
+    expect(media).toHaveLength(2);
+    expect(media.find((item) => item.id === first.id)?.isHero).toBe(false);
+    expect((await admin.deleteMediaAsset(actor, first.id)).id).toBe(first.id);
+
+    const { result } = await request();
+    const reservation = await db.reservation.findUniqueOrThrow({
+      where: { reference: result.receipt.reference },
+    });
+    const messageKey = randomUUID();
+    const message = await admin.sendGuestMessage(actor, reservation.id, {
+      idempotencyKey: messageKey,
+      subject: "Arrival details",
+      message: "Please tell us your arrival time.",
+    });
+    expect(
+      (
+        await admin.sendGuestMessage(actor, reservation.id, {
+          idempotencyKey: messageKey,
+          subject: "Arrival details",
+          message: "Please tell us your arrival time.",
+        })
+      ).id,
+    ).toBe(message.id);
+
+    const calendar = await admin.listCalendar(actor, {
+      start: "2027-05-25",
+      end: "2027-06-15",
+    });
+    expect(calendar.reservations).toHaveLength(1);
+    expect(calendar.accommodations).toHaveLength(1);
+    expect(calendar.blocks).toHaveLength(0);
+    await expect(
+      admin.listCalendar(actor, { start: "2027-01-01", end: "2027-04-01" }),
+    ).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
+  });
+  it("updates, cancels, removes, lists, and disconnects iCal events", async () => {
+    const calendar = await admin.createExternalCalendar(actor, {
+      accommodationId,
+      name: "Availability feed",
+      encryptedUrl: "encrypted-test-value",
+    });
+    expect(await admin.listExternalCalendars(actor)).toHaveLength(1);
+    const original = {
+      externalId: "moving-event",
+      start: "2027-07-01",
+      end: "2027-07-03",
+      summary: "Original dates",
+      cancelled: false,
+    };
+    await admin.syncExternalCalendar(actor, calendar.id, [original]);
+    await admin.syncExternalCalendar(actor, calendar.id, [
+      { ...original, start: "2027-07-04", end: "2027-07-07", summary: "Moved dates" },
+    ]);
+    expect(
+      await db.inventoryAllocation.count({
+        where: { active: true, startDate: new Date("2027-07-04") },
+      }),
+    ).toBe(1);
+    await admin.syncExternalCalendar(actor, calendar.id, [{ ...original, cancelled: true }]);
+    expect(await db.inventoryAllocation.count({ where: { active: true } })).toBe(0);
+
+    await admin.syncExternalCalendar(actor, calendar.id, [
+      {
+        externalId: "removed-event",
+        start: "2027-08-01",
+        end: "2027-08-03",
+        cancelled: false,
+      },
+    ]);
+    await admin.syncExternalCalendar(actor, calendar.id, []);
+    expect(await db.inventoryAllocation.count({ where: { active: true } })).toBe(0);
+    expect((await admin.disconnectExternalCalendar(actor, calendar.id)).id).toBe(calendar.id);
+    expect(await admin.listExternalCalendars(actor)).toHaveLength(0);
+    await expect(admin.syncExternalCalendar(actor, calendar.id, [])).rejects.toMatchObject({
+      code: "NOT_FOUND",
+    });
+  });
+  it("enforces Owner Control capability boundaries", async () => {
+    await db.property.update({
+      where: { id: actor.propertyId },
+      data: { portalPlan: "OWNER_CONTROL" },
+    });
+    const portal = await admin.getPortalContext(actor);
+    expect(portal.capabilities).toMatchObject({
+      canManageReservations: true,
+      canManageCalendar: true,
+      canSendGuestMessages: true,
+      canManageWebsiteContent: false,
+      canManagePricing: false,
+      canManagePhotos: false,
+      canConfigureChannels: false,
+    });
+    expect(await admin.listReservations(actor)).toEqual([]);
+    expect(
+      (await admin.listCalendar(actor, { start: "2027-06-01", end: "2027-06-08" })).reservations,
+    ).toEqual([]);
+    await expect(admin.getPropertyContent(actor)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(admin.listMedia(actor)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(admin.listRates(actor)).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(admin.listExternalCalendars(actor)).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+  it("updates the property minimum stay through the pricing capability", async () => {
+    expect(await admin.getPricingPolicy(actor)).toMatchObject({ minimumStay: 1, maximumStay: 30 });
+    expect((await admin.updatePricingPolicy(actor, { minimumStay: 3 })).minimumStay).toBe(3);
+    expect(
+      (await db.property.findUniqueOrThrow({ where: { id: actor.propertyId } })).minimumStay,
+    ).toBe(3);
+    await expect(admin.updatePricingPolicy(actor, { minimumStay: 31 })).rejects.toMatchObject({
+      code: "VALIDATION_ERROR",
+    });
   });
   it("serializes concurrent retries and rejects a changed payload", async () => {
     const { input } = await request();

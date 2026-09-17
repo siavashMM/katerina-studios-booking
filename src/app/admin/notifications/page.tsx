@@ -4,13 +4,14 @@ import { ownerForPage } from "@/features/admin/page-auth";
 import { AdminNav } from "@/features/admin/ui/admin-nav";
 import { prisma } from "@/infrastructure/db/client";
 import { getServerTranslation } from "@/i18n/server";
+import { adminService } from "@/features/booking/server";
 
 export default async function NotificationsPage() {
   const [owner, { Translate, t, formatDate }] = await Promise.all([
     ownerForPage(),
     getServerTranslation(),
   ]);
-  const [emails, heartbeat] = await Promise.all([
+  const [emails, heartbeat, context] = await Promise.all([
     prisma.emailOutbox.findMany({
       where: { reservation: { propertyId: owner.propertyId } },
       select: {
@@ -27,11 +28,12 @@ export default async function NotificationsPage() {
     prisma.workerHeartbeat.findMany({
       select: { name: true, lastRunAt: true, lastSuccessAt: true },
     }),
+    adminService().getPortalContext(owner),
   ]);
   // This Server Component reads the current worker state on each request.
   return (
     <>
-      <AdminNav />
+      <AdminNav fullControl={context.property.portalPlan === "FULL_CONTROL"} />
       <main id="main-content" className="admin-main">
         <div className="admin-heading">
           <p className="eyebrow">{Translate.admin.notifications.eyebrow}</p>

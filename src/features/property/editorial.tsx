@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowIcon, PlusIcon } from "@/components/ui/icons";
 import { getServerTranslation } from "@/i18n/server";
+import { getPublicProperty } from "./public-data";
 
 export async function StayInvitation() {
   const { Translate } = await getServerTranslation();
@@ -22,6 +23,14 @@ export async function StayInvitation() {
 
 export async function PracticalInformation() {
   const { Translate } = await getServerTranslation();
+  const managed = await getPublicProperty();
+  const content = managed?.content;
+  const amenities = Array.isArray(content?.amenities)
+    ? content.amenities.filter((item): item is string => typeof item === "string")
+    : [];
+  const policies = Array.isArray(content?.policies)
+    ? content.policies.filter((item): item is string => typeof item === "string")
+    : [];
   return (
     <section className="container section practical-section">
       <div>
@@ -39,6 +48,54 @@ export async function PracticalInformation() {
             <p>{answer}</p>
           </details>
         ))}
+        {content?.checkIn || content?.checkOut ? (
+          <details>
+            <summary>
+              Check-in and check-out
+              <PlusIcon />
+            </summary>
+            {content.checkIn ? <p>Check-in: {content.checkIn}</p> : null}
+            {content.checkOut ? <p>Check-out: {content.checkOut}</p> : null}
+          </details>
+        ) : null}
+        {amenities.length ? (
+          <details>
+            <summary>
+              Property amenities
+              <PlusIcon />
+            </summary>
+            <p>{amenities.join(" · ")}</p>
+          </details>
+        ) : null}
+        {policies.length ? (
+          <details>
+            <summary>
+              Property policies
+              <PlusIcon />
+            </summary>
+            {policies.map((policy) => (
+              <p key={policy}>{policy}</p>
+            ))}
+          </details>
+        ) : null}
+        {content?.contactEmail || content?.contactPhone ? (
+          <details>
+            <summary>
+              Contact Katerina Studios
+              <PlusIcon />
+            </summary>
+            {content.contactEmail ? (
+              <p>
+                <a href={`mailto:${content.contactEmail}`}>{content.contactEmail}</a>
+              </p>
+            ) : null}
+            {content.contactPhone ? (
+              <p>
+                <a href={`tel:${content.contactPhone}`}>{content.contactPhone}</a>
+              </p>
+            ) : null}
+          </details>
+        ) : null}
       </div>
     </section>
   );

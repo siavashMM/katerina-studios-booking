@@ -9,13 +9,14 @@ export default async function AvailabilityPage() {
   const owner = await ownerForPage();
   const { Translate } = await getServerTranslation();
   const service = adminService();
-  const [blocks, studios] = await Promise.all([
+  const [blocks, studios, context] = await Promise.all([
     service.listBlocks(owner),
-    service.listRates(owner),
+    service.listAccommodationsForOwner(owner),
+    service.getPortalContext(owner),
   ]);
   return (
     <>
-      <AdminNav />
+      <AdminNav fullControl={context.property.portalPlan === "FULL_CONTROL"} />
       <main id="main-content" className="admin-main">
         <div className="admin-heading">
           <p className="eyebrow">{Translate.admin.availability.eyebrow}</p>

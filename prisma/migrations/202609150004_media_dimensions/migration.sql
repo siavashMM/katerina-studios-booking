@@ -1,0 +1,11 @@
+ALTER TABLE "MediaAsset"
+ADD COLUMN "width" INTEGER NOT NULL DEFAULT 1600,
+ADD COLUMN "height" INTEGER NOT NULL DEFAULT 1200;
+
+ALTER TABLE "MediaAsset"
+ALTER COLUMN "width" DROP DEFAULT,
+ALTER COLUMN "height" DROP DEFAULT;
+
+ALTER TABLE "MediaAsset"
+ADD CONSTRAINT "MediaAsset_width_positive" CHECK ("width" > 0),
+ADD CONSTRAINT "MediaAsset_height_positive" CHECK ("height" > 0);

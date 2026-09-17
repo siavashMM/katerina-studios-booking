@@ -30,7 +30,11 @@ const schema = z.object({
   RESEND_API_KEY: optionalString,
   RESEND_WEBHOOK_SECRET: optionalString,
   EMAIL_FROM: optionalString,
-  RESERVATION_OWNER_EMAIL: optionalString,
+  OWNER_NOTIFICATION_EMAIL: optionalString,
+  REAL_EMAIL_TEST: booleanString("false"),
+  MEDIA_STORAGE: z.enum(["local", "disabled"]).default("local"),
+  ICAL_ENCRYPTION_KEY: optionalString,
+  ICAL_EXPORT_SECRET: optionalString,
   GOOGLE_PLACES_API_KEY: optionalTrimmedString,
   GOOGLE_PLACE_ID: z.preprocess(
     (value) => (value === "" ? undefined : value),
@@ -70,6 +74,9 @@ export function parseEnv(input: Record<string, string | undefined>): Environment
   }
   if (env.AUTH0_TEST_INSECURE && env.NODE_ENV !== "test") {
     throw new Error("AUTH0_TEST_INSECURE is only available to the test process.");
+  }
+  if (env.REAL_EMAIL_TEST && env.NODE_ENV !== "development") {
+    throw new Error("REAL_EMAIL_TEST is only available in development.");
   }
   if (Boolean(env.GOOGLE_PLACES_API_KEY) !== Boolean(env.GOOGLE_PLACE_ID)) {
     throw new Error("Invalid configuration: GOOGLE_PLACES_API_KEY, GOOGLE_PLACE_ID.");
@@ -133,6 +140,11 @@ export function readinessIssues(env = getEnv()): string[] {
   if (!env.RATE_LIMIT_SECRET || env.RATE_LIMIT_SECRET.length < 32)
     issues.push("RATE_LIMIT_SECRET_REQUIRED");
   if (!env.RECEIPT_SECRET || env.RECEIPT_SECRET.length < 32) issues.push("RECEIPT_SECRET_REQUIRED");
+  if (
+    (!env.DEMO_MODE || env.REAL_EMAIL_TEST) &&
+    (!env.RESEND_API_KEY || !env.EMAIL_FROM || !env.OWNER_NOTIFICATION_EMAIL)
+  )
+    issues.push("EMAIL_NOT_CONFIGURED");
   if (!env.DEMO_MODE) {
     if (!productionContentApproved) issues.push("PUBLIC_CONTENT_NOT_APPROVED");
     if (env.DATABASE_URL) {
@@ -146,13 +158,7 @@ export function readinessIssues(env = getEnv()): string[] {
     if (!env.APP_URL.startsWith("https://")) issues.push("APP_URL_HTTPS_REQUIRED");
     if (!env.PROPERTY_DATA_VERIFIED) issues.push("PROPERTY_DATA_NOT_VERIFIED");
     if (!authConfigured(env)) issues.push("AUTH_NOT_CONFIGURED");
-    if (
-      !env.RESEND_API_KEY ||
-      !env.RESEND_WEBHOOK_SECRET ||
-      !env.EMAIL_FROM ||
-      !env.RESERVATION_OWNER_EMAIL
-    )
-      issues.push("EMAIL_NOT_CONFIGURED");
+    if (!env.RESEND_WEBHOOK_SECRET) issues.push("EMAIL_WEBHOOK_NOT_CONFIGURED");
     if (env.TRUST_PROXY === "none") issues.push("TRUSTED_PROXY_NOT_CONFIGURED");
   }
   return issues;

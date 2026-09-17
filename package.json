@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "prisma generate",
     "dev": "next dev",
     "build": "prisma generate && next build && npm run build:worker && node scripts/prepare-standalone.mjs",
     "start": "node --env-file-if-exists=.env .next/standalone/server.js",
@@ -19,10 +20,10 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "node --env-file-if-exists=.env --import tsx prisma/seeds/demo.ts",
-    "worker": "node --env-file-if-exists=.env --import tsx src/jobs/email-worker.ts",
+    "worker": "node --env-file-if-exists=.env --env-file-if-exists=.env.local --import tsx src/jobs/email-worker.ts",
     "images:prepare": "node scripts/prepare-images.mjs",
     "build:worker": "esbuild src/jobs/email-worker.ts --bundle --platform=node --target=node24 --format=cjs --external:@prisma/client --outfile=dist-worker/email-worker.cjs",
-    "owner:access": "node --env-file-if-exists=.env --import tsx scripts/owner-access.ts"
+    "owner:access": "node --env-file-if-exists=.env --env-file-if-exists=.env.local --import tsx scripts/owner-access.ts"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "4.29.0",

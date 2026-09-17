@@ -1,0 +1,5 @@
+ALTER TABLE "Accommodation"
+  ADD COLUMN "shortDescription" TEXT NOT NULL DEFAULT '',
+  ADD COLUMN "fullDescription" TEXT NOT NULL DEFAULT '',
+  ADD COLUMN "beds" TEXT NOT NULL DEFAULT '',
+  ADD COLUMN "amenities" JSONB NOT NULL DEFAULT '[]';

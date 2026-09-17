@@ -4,6 +4,8 @@ import { ArrowIcon, CalendarIcon, LeafIcon, PinIcon, SeaIcon } from "@/component
 import { getEnv } from "@/config/env";
 import { homeStoryPhoto } from "@/content/editorial-photos";
 import { Photo } from "@/features/property/photo";
+import { nonEmpty } from "@/features/property/managed-content";
+import { getPublicProperty } from "@/features/property/public-data";
 import { PracticalInformation, StayInvitation } from "@/features/property/editorial";
 import { HomepageReviewsSection } from "@/features/reviews/ui/reviews-server";
 import { getServerTranslation } from "@/i18n/server";
@@ -11,11 +13,23 @@ import { getServerTranslation } from "@/i18n/server";
 export default async function Home() {
   const demo = getEnv().DEMO_MODE;
   const { Translate, t } = await getServerTranslation();
+  const managed = await getPublicProperty();
+  const heroPhoto = managed?.media.find((media) => media.isHero)?.photo;
+  const storyIntroduction = nonEmpty(
+    managed?.content?.introduction,
+    Translate.property.familyStory.introduction,
+  );
+  const locationSummary = nonEmpty(managed?.content?.locationSummary, Translate.home.location.text);
   return (
     <main id="main-content">
       <section className="home-hero" aria-labelledby="home-hero-title">
         <span className="header-scroll-sentinel" data-header-sentinel aria-hidden="true" />
-        <Photo id="balcony-striped-chairs" className="hero-photo" sizes="100vw" priority />
+        <Photo
+          {...(heroPhoto ? { photo: heroPhoto } : { id: "balcony-striped-chairs" })}
+          className="hero-photo"
+          sizes="100vw"
+          priority
+        />
         <div className="hero-overlay" aria-hidden="true" />
         <div className="container hero-content">
           <div className="hero-heading">
@@ -85,7 +99,7 @@ export default async function Home() {
             {Translate.home.story.heading} <br />
             <span className="italic">{Translate.home.story.headingAccent}</span>
           </h2>
-          <p>{Translate.property.familyStory.introduction}</p>
+          <p>{storyIntroduction}</p>
           <Link href="/about" className="text-link">
             {Translate.home.story.link} <ArrowIcon />
           </Link>
@@ -163,7 +177,7 @@ export default async function Home() {
               <PinIcon width={16} height={16} /> {Translate.common.locationShort}
             </p>
             <h2>{Translate.home.location.heading}</h2>
-            <p>{Translate.home.location.text}</p>
+            <p>{locationSummary}</p>
             <Link href="/location" className="text-link">
               {Translate.home.location.link} <ArrowIcon />
             </Link>

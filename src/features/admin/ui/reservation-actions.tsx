@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Dialog, DialogTrigger, Heading, Modal, ModalOverlay } from "react-aria-components";
@@ -64,6 +65,11 @@ export function ReservationActions({
         <button className="button" disabled={busy} onClick={() => act("complete")}>
           {Translate.admin.actions.complete}
         </button>
+      ) : null}
+      {status === "CONFIRMED" ? (
+        <Link className="button button-secondary" href={`/admin/messages?reservation=${id}`}>
+          Send message
+        </Link>
       ) : null}
       {status === "PENDING" || status === "CONFIRMED" ? (
         <DialogTrigger>

@@ -98,6 +98,16 @@ export async function enqueueReservationEmail(
   appUrl?: string,
 ): Promise<void> {
   const snapshot = reservation.priceSnapshot as unknown as BookingQuote;
+  const content = await tx.propertyContent.findUnique({
+    where: { propertyId: reservation.propertyId },
+    select: {
+      contactEmail: true,
+      contactPhone: true,
+      arrivalInstructions: true,
+      checkIn: true,
+      checkOut: true,
+    },
+  });
   await tx.emailOutbox.create({
     data: {
       reservationId: reservation.id,
@@ -107,16 +117,27 @@ export async function enqueueReservationEmail(
       payload: {
         reference: reservation.reference,
         guestName: `${reservation.firstName} ${reservation.lastName}`,
+        guestEmail: reservation.email,
+        guestPhone: reservation.phone,
         accommodationName: reservation.accommodation.name,
         checkIn: dateOnly(reservation.checkIn),
         checkOut: dateOnly(reservation.checkOut),
         guestCount: reservation.guests,
         nights: reservation.nights,
+        arrivalTime: reservation.arrivalTime,
+        specialRequests: reservation.specialRequests,
         totalCents: reservation.totalCents,
         currency: reservation.currency,
         policySummary: snapshot.policy.summary,
         cashOnArrival: true,
         paymentMethod: "CASH_ON_ARRIVAL",
+        ...(content?.contactEmail ? { contactEmail: content.contactEmail } : {}),
+        ...(content?.contactPhone ? { contactPhone: content.contactPhone } : {}),
+        ...(content?.arrivalInstructions
+          ? { arrivalInstructions: content.arrivalInstructions }
+          : {}),
+        ...(content?.checkIn ? { checkInInformation: content.checkIn } : {}),
+        ...(content?.checkOut ? { checkOutInformation: content.checkOut } : {}),
         status: reservation.status,
         reservationVersion: reservation.version,
         ...(appUrl ? { adminUrl: `${appUrl}/admin/reservations/${reservation.id}` } : {}),

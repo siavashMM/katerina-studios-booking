@@ -14,7 +14,7 @@ async function main() {
   const env = getEnv();
   if (readinessIssues(env).length) throw new Error("Worker configuration is incomplete");
   const provider = new ResendEmailProvider({
-    demo: env.DEMO_MODE,
+    demo: env.DEMO_MODE && !env.REAL_EMAIL_TEST,
     key: env.RESEND_API_KEY,
     from: env.EMAIL_FROM ?? "Demo <demo@example.invalid>",
   });
